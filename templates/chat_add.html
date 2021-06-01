@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Создать беседу{% endblock %}
+
+{% block content %}
+    <style>
+        .help {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            font-size: 12px;
+        }
+    </style>
+    <h1>Создание беседы</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Создать</button>
+    </form>
+{% endblock %}

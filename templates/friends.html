@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Друзья{% endblock %}
+
+{% block content %}
+    <style>
+        .friend-username {
+            font-size: 20px;
+        }
+    </style>
+    <a href="{% url 'friends-add' %}">Добавить друзей</a>
+    <h1>Ваш список друзей:</h1>
+    {% for friend in object_list %}
+        {% with username=friend.user.username %}
+            <a href="{% url 'profile' username %}"><p class="friend-username">{{username}}</p></a>
+        {% endwith %}
+    {% endfor %}
+{% endblock %}

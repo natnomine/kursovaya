@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Друзья{% endblock %}
+
+{% block content %}
+    <style>
+        .chat {
+            margin: 10px 0;
+            padding: 10px 10px;
+            border-radius: 15px;
+        }
+
+        .chat-firstly {
+            background-color: #eee;
+        }
+
+        .chat-secondary {
+            background-color: #ccc;
+        }
+
+        .message-sender{
+            color: cornflowerblue;
+        }
+
+        .chat-name{
+            font-size: 30px
+        }
+
+        .message-send-at{
+            color: gray
+        }
+    </style>
+    <h1>Беседы:</h1>
+    <div>
+        <a href="{% url 'chats-add' %}">Создать новую беседу</a>
+        {% for chat in object_list %}
+            <a href="{% url 'chats-detailed' chat.id %}" >
+                <div class="{% cycle 'chat-firstly' 'chat-secondary' %} chat">
+                        <span class="chat-name">{{chat.name}}
+                            {% if chat.is_private %}
+                                {% for member in chat.members.all %}
+                                    <span>{% if member.id != request.user.profile.id %} с {{member.user.username}}{% endif %}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </span>
+                        {% if chat.messages.all %}
+                            {% with last_message=chat.messages.last %}
+                                <span class="message-send-at"> {{last_message.send_at|date:'G:i:s'}}</span><br>
+                                <span><span class="message-sender">{{last_message.sender.user.username}}</span>: {{last_message.text}}</span>
+                            {% endwith %}
+                        {% else %}
+                            <p>Диалог пуст</p>
+                        {% endif %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

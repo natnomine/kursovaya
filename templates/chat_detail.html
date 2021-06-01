@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Беседа {{object.name}}{% endblock %}
+
+{% block content %}
+    <div style="width: 100%; position: fixed; height: 100%">
+        <h1 style="width: 60%; margin: 10px auto">{{object.name}}</h1>
+        <div style="width: 60%; margin: 10px auto; overflow-y: scroll; height: 65%; background-color: #eee; padding: 10px 40px; border-radius: 30px">
+            {% for message in object.messages.all %}
+                <div style="margin: 20px 0; border-radius: 8px; display: flex; flex-direction: row">
+                    <div style="margin: 0 10px">
+                        {% if message.sender.avatar %}
+                            <img src="{{message.sender.avatar.url}}" width="40px" height="40px" style="border-radius: 30px;">
+                        {% else %}
+                            <img src="/media/default_images/default_image.png" width="40px" height="40px" style="border-radius: 30px;">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div style="font-size: 23px">
+                            <a href="{% url 'profile' message.sender.user.username %}">{{message.sender.user.username}}</a>
+                            <span style="font-size: 13px; color: blue">{{message.send_at|date:'G:i:s'}}</span>
+                        </div>
+                        <div>{{message.text}}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="width: 60%; margin: 0 auto">
+            <form method="post">
+                {% csrf_token %}
+                <input placeholder="Напишите сообщение..." style="margin: 0 auto; width: 60%; height: 50px; border-width: 4px; border-radius: 10px; font-size: 20px" name="message" type="text">
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

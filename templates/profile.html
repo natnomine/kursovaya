@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+    {% if object.avatar %}
+        <img src="{{object.avatar.url}}" width="300px" height="300px">
+    {% else %}
+        <img src="/media/default_images/default_image.png" width="300px" height="300px">
+    {% endif %}
+    <form action="{% url 'upload-avatar' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <p>
+            <input id="id_image" type="file" class="" name="image">
+        </p>
+        <input type="submit" value="Submit" />
+    </form>
+    {% if object.user.id != request.user.id %}
+        <form method="POST">
+            {% csrf_token %}
+            {% if object not in request.user.profile.friends.all %}
+                <input type="submit" name="action" value="Добавить в друзья" />
+            {% endif %}
+            <input type="submit" name="action" value="Написать сообщение" />
+        </form>
+    {% endif %}
+    <div style="font-size: 30px">
+        {{object.user.username}}
+    </div>
+{% endblock %}
