@@ -1,6 +1,6 @@
-# Messanger
+# Messenger
 
-## This is a little messanger with ability to add friends and create conversations with them
+## This is a little messenger with ability to add friends and create conversations with them
 
 ## Firstly you should create virtualenv in dir named `.venv`
 
